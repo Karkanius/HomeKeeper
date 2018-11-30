@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+
+<div class="container">
+    <div id="products" class="row view-group">
+        {% for x in database %}
+            <div class="item col-xs-4 col-lg-4">
+                <div class="thumbnail card">
+                    <div class="img-event">
+                        <img class="group list-group-image img-fluid" src={{x.path}} alt="" />
+                    </div>
+                    <div class="caption card-body">
+                        <h4 class="group card-title inner list-group-item-heading">
+                            {{ x.nome}}</h4>
+                        <p class="group inner list-group-item-text">
+                            {{ x.descricao}}
+                        </p>
+                        <h8 class="group card-title inner list-group-item-heading">
+                            {{ x.dataC}}</h8>
+                        <h8 class="group card-title inner list-group-item-heading">
+                            {{ x.horaC}}</h8>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead">
+                                    {{ x.preco}}€/h
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
