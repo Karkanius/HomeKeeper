@@ -253,7 +253,6 @@ class WebApp(object):
         for u in serv_aux:
             f = u.split('-')
             for v in db_json['enfermeiros']:
-                print(v)
                 if(v['nome']==f[0]):
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
@@ -273,7 +272,6 @@ class WebApp(object):
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
                     listaAux.append(v)
-        print(listaAux)
 
         tparams = {
             'title': 'Profissionais contratados',
@@ -284,6 +282,23 @@ class WebApp(object):
         }
         json.dump(db_json, open(WebApp.dbjson, 'w'))
         return self.render('hiredProfessionals.html', tparams)
+
+    @cherrypy.expose
+    def cancelarServico(self,name):
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['servicos']
+                break
+        for u in serv_aux:
+            f = u.split('-')
+            if name.replace('Cancelar-','')==f[0]:
+                print("aqui")
+                serv_aux.remove(u)
+        json.dump(db_json, open(WebApp.dbjson, 'w'))
+        return self.hiredProfessionals()
 
 
 
