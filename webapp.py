@@ -300,7 +300,46 @@ class WebApp(object):
         json.dump(db_json, open(WebApp.dbjson, 'w'))
         return self.hiredProfessionals()
 
-
+    @cherrypy.expose
+    def settings(self, currentPassword=None, newPassword1=None, newPassword2=None):
+        tparams = {
+            'title': 'Settings',
+            'errors': False,
+            'changed': False,
+            'user': self.get_user(),
+            'year': datetime.now().year,
+        }
+        print(tparams)
+        if currentPassword == None:
+            return self.render('settings.html', tparams)
+        else:
+            if newPassword1 == newPassword2:
+                user = self.get_user()['username']
+                print("user",user)
+                db_json = json.load(open(WebApp.dbjson))
+                users = db_json['users']
+                for d in users:
+                    if d['username'] == user:
+                        d['password'] = newPassword1
+                        print("mudado")
+                json.dump(db_json, open(WebApp.dbjson, 'w'))
+                tparams = {
+                    'title': 'Settings',
+                    'errors': False,
+                    'changed': True,
+                    'user': self.get_user(),
+                    'year': datetime.now().year,
+                }
+                return self.render('settings.html', tparams)
+            else:
+                tparams = {
+                    'title': 'Settings',
+                    'errors': True,
+                    'changed': False,
+                    'user': self.get_user(),
+                    'year': datetime.now().year,
+                }
+                return self.render('settings.html', tparams)
 
     @cherrypy.expose
     def logout(self):
