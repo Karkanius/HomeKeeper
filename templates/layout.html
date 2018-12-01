@@ -33,17 +33,6 @@
           <li class="nav-item">
               <a class="nav-link" href="contact">Contact</a>
           </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-              <a class="nav-link" href="list"> Profissionais disponíveis</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="hiredProfessionals"> Profissionais contratados</a>
-          </li>
-          <li class="nav-item">
-             <a class="nav-link" href="cameras"> Aceder a câmeras</a>
-          </li>
-          {% endif %}
         </ul>
         {% include 'loginpartial.html' %}
       </div>

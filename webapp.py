@@ -76,6 +76,16 @@ class WebApp(object):
         users.append(dict_aux)
         json.dump(db_json, open(WebApp.dbjson, 'w'))
 
+    def fillInDB(self):
+        db_json = json.load(open(WebApp.dbjson))
+        professionals = db_json['enfermeiros'] + db_json['babysitter'] + db_json['fisioterapeutas'] + db_json['limpeza']
+
+        for d in professionals:
+            d['path'] = "http://placehold.it/400x250/000/fff"
+            d['descricao'] = "Texto descritivo do profissional"
+        json.dump(db_json, open(WebApp.dbjson, 'w'))
+
+
 ########################################################################################################################
 #   Controllers
 
@@ -254,21 +264,25 @@ class WebApp(object):
             f = u.split('-')
             for v in db_json['enfermeiros']:
                 if(v['nome']==f[0]):
+                    print("enfermeiro")
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
                     listaAux.append(v)
             for v in db_json['babysitter']:
                 if(v['nome']==f[0]):
+                    print("baby")
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
                     listaAux.append(v)
             for v in db_json['fisioterapeutas']:
                 if(v['nome']==f[0]):
+                    print("fisio")
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
                     listaAux.append(v)
             for v in db_json['limpeza']:
                 if(v['nome']==f[0]):
+                    print("limpeza")
                     v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
                     v['horaC'] = f[4]
                     listaAux.append(v)
