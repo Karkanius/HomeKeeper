@@ -298,6 +298,33 @@ class WebApp(object):
         return self.render('hiredProfessionals.html', tparams)
 
     @cherrypy.expose
+    def termination(self, password1 = None, password2 = None):
+        print("Termination")
+        tparams = {
+            'title': 'Settings',
+            'errors': False,
+            'changed': False,
+            'user': self.get_user(),
+            'year': datetime.now().year,
+        }
+
+        user = self.get_user()
+        print("user: ", user)
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+
+        if password1 == password2:
+            for d in users:
+                if d['username'] == user['username']:
+                    if d['password'] == password1:
+                        print("encontrado")
+                        users.remove(d)
+                        json.dump(db_json, open(WebApp.dbjson, 'w'))
+                        return self.logout()
+
+        return self.render('settings.html', tparams)
+
+    @cherrypy.expose
     def cancelarServico(self,name):
         user = self.get_user()
         db_json = json.load(open(WebApp.dbjson))
@@ -323,7 +350,6 @@ class WebApp(object):
             'user': self.get_user(),
             'year': datetime.now().year,
         }
-        print(tparams)
         if currentPassword == None:
             return self.render('settings.html', tparams)
         else:
