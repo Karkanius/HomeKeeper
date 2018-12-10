@@ -415,7 +415,7 @@ class WebApp(object):
         return self.render('rateProfessionals.html',tparams)
 
     @cherrypy.expose
-    def rateServico(self,rating,name):
+    def rateServico(self,rating,name,comentario):
         user = self.get_user()
         db_json = json.load(open(WebApp.dbjson))
         users = db_json['users']
@@ -436,21 +436,29 @@ class WebApp(object):
                 pont,cont=v['pontuacao']
                 v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
                 v['pontuacao'][0]=round(v['pontuacao'][0],1)
+                if not comentario == "":
+                    v['comentarios'].append(comentario)
         for v in db_json['babysitter']:
             if v['nome']==name:
                 pont,cont=v['pontuacao']
                 v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
                 v['pontuacao'][0]=round(v['pontuacao'][0],1)
+                if not comentario == "":
+                    v['comentarios'].append(comentario)
         for v in db_json['fisioterapeutas']:
             if v['nome']==name:
                 pont,cont=v['pontuacao']
                 v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
                 v['pontuacao'][0]=round(v['pontuacao'][0],1)
+                if not comentario == "":
+                    v['comentarios'].append(comentario)
         for v in db_json['limpeza']:
             if v['nome']==name:
                 pont,cont=v['pontuacao']
                 v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
                 v['pontuacao'][0]=round(v['pontuacao'][0],1)
+                if not comentario == "":
+                    v['comentarios'].append(comentario)
         json.dump(db_json, open(WebApp.dbjson, 'w'))
         return self.rateProfessionals()
 
