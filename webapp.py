@@ -251,6 +251,7 @@ class WebApp(object):
 
     @cherrypy.expose
     def hiredProfessionals(self):
+        self.atualizar()
         user = self.get_user()
         db_json = json.load(open(WebApp.dbjson))
         users = db_json['users']
@@ -264,29 +265,24 @@ class WebApp(object):
             f = u.split('-')
             for v in db_json['enfermeiros']:
                 if(v['nome']==f[0]):
-                    print("enfermeiro")
-                    v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
-                    v['horaC'] = f[4]
-                    listaAux.append(v)
+                    dataC = f[1]+"-"+f[2]+"-"+f[3]
+                    horaC = f[4]
+                    listaAux.append([v,dataC,horaC])
             for v in db_json['babysitter']:
                 if(v['nome']==f[0]):
-                    print("baby")
-                    v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
-                    v['horaC'] = f[4]
-                    listaAux.append(v)
+                    dataC = f[1]+"-"+f[2]+"-"+f[3]
+                    horaC = f[4]
+                    listaAux.append([v,dataC,horaC])
             for v in db_json['fisioterapeutas']:
                 if(v['nome']==f[0]):
-                    print("fisio")
-                    v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
-                    v['horaC'] = f[4]
-                    listaAux.append(v)
+                    dataC = f[1]+"-"+f[2]+"-"+f[3]
+                    horaC = f[4]
+                    listaAux.append([v,dataC,horaC])
             for v in db_json['limpeza']:
                 if(v['nome']==f[0]):
-                    print("limpeza")
-                    v['dataC'] = f[1]+"-"+f[2]+"-"+f[3]
-                    v['horaC'] = f[4]
-                    listaAux.append(v)
-
+                    dataC = f[1]+"-"+f[2]+"-"+f[3]
+                    horaC = f[4]
+                    listaAux.append([v,dataC,horaC])
         tparams = {
             'title': 'Profissionais contratados',
             'message': 'Your application description page.',
@@ -354,6 +350,126 @@ class WebApp(object):
                     'year': datetime.now().year,
                 }
                 return self.render('settings.html', tparams)
+
+    @cherrypy.expose
+    def rateProfessionals(self):
+        self.atualizar()
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['servicosP'].copy()
+                break
+
+        listaAux=[]
+        for u in serv_aux:
+            f = u.split('-')
+            for v in db_json['enfermeiros']:
+                if(v['nome']==f[0]):
+                    listaAux.append(v)
+            for v in db_json['babysitter']:
+                if(v['nome']==f[0]):
+                    listaAux.append(v)
+            for v in db_json['fisioterapeutas']:
+                if(v['nome']==f[0]):
+                    listaAux.append(v)
+            for v in db_json['limpeza']:
+                if(v['nome']==f[0]):
+                    listaAux.append(v)
+
+        tparams = {
+            'title': 'Avaliar Profissionais',
+            'message': 'Your application description page.',
+            'user': self.get_user(),
+            'year': datetime.now().year,
+            'database': listaAux
+        }
+        json.dump(db_json, open(WebApp.dbjson, 'w'))
+        return self.render('rateProfessionals.html',tparams)
+
+    @cherrypy.expose
+    def rateServico(self,rating,name):
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['servicosP']
+                break
+
+        name=name.replace('Avaliar-','')
+
+        for u in serv_aux:
+            f = u.split('-')
+            if name==f[0]:
+                serv_aux.remove(u)
+
+        for v in db_json['enfermeiros']:
+            if v['nome']==name:
+                pont,cont=v['pontuacao']
+                v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
+                v['pontuacao'][0]=round(v['pontuacao'][0],1)
+        for v in db_json['babysitter']:
+            if v['nome']==name:
+                pont,cont=v['pontuacao']
+                v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
+                v['pontuacao'][0]=round(v['pontuacao'][0],1)
+        for v in db_json['fisioterapeutas']:
+            if v['nome']==name:
+                pont,cont=v['pontuacao']
+                v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
+                v['pontuacao'][0]=round(v['pontuacao'][0],1)
+        for v in db_json['limpeza']:
+            if v['nome']==name:
+                pont,cont=v['pontuacao']
+                v['pontuacao']=[(float(pont)*int(cont)+int(rating))/(int(cont)+1),int(cont)+1]
+                v['pontuacao'][0]=round(v['pontuacao'][0],1)
+        json.dump(db_json, open(WebApp.dbjson, 'w'))
+        return self.rateProfessionals()
+
+    def atualizar(self):
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['servicos']
+                serv_auxP = u['servicosP']
+                break
+
+        for u in serv_aux:
+            f = u.split('-')
+            n = f[4].split(':')
+            if not self.compData(int(f[1]),int(f[2]),int(f[3]),int(n[0]),int(n[1])):
+                serv_auxP.append(u)
+                serv_aux.remove(u)
+        json.dump(db_json, open(WebApp.dbjson, 'w'))
+
+    def compData(self,year,month,day,hora,minuto):
+        if(year>datetime.now().year):
+            return True
+        elif(year<datetime.now().year):
+            return False
+        else:
+            if(month>datetime.now().month):
+                return True
+            elif(month<datetime.now().month):
+                return False
+            else:
+                if(day>datetime.now().day):
+                    return True
+                elif(day<datetime.now().day):
+                    return False
+                else:
+                    if(hora>datetime.now().hour):
+                        return True
+                    elif(hora>datetime.now().hour):
+                        return False
+                    else:
+                        if(minuto>datetime.now().minute):
+                            return True
+                        else: return False
 
     @cherrypy.expose
     def logout(self):

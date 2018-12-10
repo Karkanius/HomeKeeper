@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+
+<style>
+.rating {
+  float:left;
+}
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    /* padding:0 .1em; */
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:300%;
+    /* line-height:1.2; */
+    color:#ddd;
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+.rating > input:checked ~ label {
+        color: dodgerblue;
+
+    }
+
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+        color: dodgerblue;
+
+    }
+
+    .rating > input:checked + label:hover,
+    .rating > input:checked + label:hover ~ label,
+    .rating > input:checked ~ label:hover,
+    .rating > input:checked ~ label:hover ~ label,
+    .rating > label:hover ~ input:checked ~ label {
+        color: dodgerblue;
+
+    }
+
+    .rating > label:active {
+        position:relative;
+        top:2px;
+        left:2px;
+    }
+</style>
+
+
+<div class="container">
+    <div id="products" class="row view-group">
+        {% for x in database %}
+            <div class="item col-xs-4 col-lg-4">
+                <div class="thumbnail card">
+                    <div class="img-event">
+                        <img class="group list-group-image img-fluid" width="400" height="250"  src={{x.path}} alt="" />
+                    </div>
+                    <div class="caption card-body">
+                        <h4 class="group card-title inner list-group-item-heading">
+                            {{ x.nome}}</h4>
+                        <p class="group inner list-group-item-text">
+                            {{ x.descricao}}
+                        </p>
+                    </div>
+                    <form action="rateServico" method="post" class="form-horizontal">
+                        <div class="rating">
+                            <input type="radio" id="star5" name="rating" value=5 onclick="rateServico()" /><label for=star5 title="MuitoBom">5stars</label>
+                            <input type="radio" id="star4" name="rating" value=4 /><label for=star4 title="Bom">4stars</label>
+                            <input type="radio" id="star3" name="rating" value=3 /><label for=star3 title="Meh">3stars</label>
+                            <input type="radio" id="star2" name="rating" value=2 /><label for=star2 title="Fraco">2stars</label>
+                            <input type="radio" id="star1" name="rating" value=1 /><label for=star1 title="Pessimo">1stars</label>
+                        </div>
+                            <label for="name"></label>
+                            <input id="name" name="name" type="submit" value=Avaliar-{{x.nome}} class="btn btn-default" />
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
