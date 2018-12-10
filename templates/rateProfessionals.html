@@ -74,19 +74,23 @@
                             {{ x.descricao}}
                         </p>
                     </div>
-                    <form action="rateServico" method="post" class="form-horizontal">
-                        <div class="rating">
-                            <input type="radio" id="star5" name="rating" value=5 onclick="rateServico()" /><label for=star5 title="MuitoBom">5stars</label>
-                            <input type="radio" id="star4" name="rating" value=4 /><label for=star4 title="Bom">4stars</label>
-                            <input type="radio" id="star3" name="rating" value=3 /><label for=star3 title="Meh">3stars</label>
-                            <input type="radio" id="star2" name="rating" value=2 /><label for=star2 title="Fraco">2stars</label>
-                            <input type="radio" id="star1" name="rating" value=1 /><label for=star1 title="Pessimo">1stars</label>
-                        </div>
-                            <label for="comentario"></label>
-                            <textarea name="comentario">Comentário...</textarea>
-                            <label for="name"></label>
-                            <input id="name" name="name" type="submit" value=Avaliar-{{x.nome}} class="btn btn-default" />
-                    </form>
+
+                        <form action="rateServico" method="post" class="form-horizontal">
+                          <div align="center">
+                            <div class="rating">
+                                <input type="radio" id="star5" name="rating" value=5 onclick="rateServico()" /><label for=star5 title="MuitoBom">5stars</label>
+                                <input type="radio" id="star4" name="rating" value=4 /><label for=star4 title="Bom">4stars</label>
+                                <input type="radio" id="star3" name="rating" value=3 /><label for=star3 title="Meh">3stars</label>
+                                <input type="radio" id="star2" name="rating" value=2 /><label for=star2 title="Fraco">2stars</label>
+                                <input type="radio" id="star1" name="rating" value=1 /><label for=star1 title="Pessimo">1stars</label>
+                            </div>
+                                <label for="comentario"></label>
+                                <textarea style="margin-bottom: 15px" name="comentario">Comentário...</textarea>
+                                <label for="name"></label>
+                                <input style="margin-bottom: 5px" id="name" name="name" type="submit" value=Avaliar-{{x.nome}} class="btn btn-default" />
+                                </div>
+                          </form>
+
                 </div>
             </div>
         {% endfor %}
