@@ -506,6 +506,16 @@ class WebApp(object):
                         else: return False
 
     @cherrypy.expose
+    def formProfessional(self):
+        tparams = {
+            'title': 'Formulário Profissional',
+            'message': 'Preencha todas as informações. Será mais tarde informado se foi aceite.',
+            'user': self.get_user(),
+            'year': datetime.now().year,
+        }
+        return self.render('formProfissional.html',tparams)
+
+    @cherrypy.expose
     def logout(self):
         self.set_user()
         raise cherrypy.HTTPRedirect("/")
