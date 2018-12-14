@@ -237,6 +237,25 @@ class WebApp(object):
         return self.render('professionals.html', tparams)
 
     @cherrypy.expose
+    def description(self, name):
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['enfermeiros'] + db_json['babysitter']+ db_json['fisioterapeutas'] + db_json['limpeza']
+        professional = db_json['enfermeiros'][0]
+        name = name.replace('Contratar-','')
+        print("nome: ",name)
+        for d in users:
+            if d['nome'] == name:
+                professional = d
+        tparams = {
+            'title': 'Limpeza',
+            'message': 'Your application description page.',
+            'user': self.get_user(),
+            'professional': professional,
+            'year': datetime.now().year
+        }
+        return self.render('detailedDescription.html', tparams)
+
+    @cherrypy.expose
     def professionals(self,dat,appt,name):
         user = self.get_user()
         db_json = json.load(open(WebApp.dbjson))
