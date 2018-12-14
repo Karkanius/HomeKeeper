@@ -111,7 +111,7 @@ class WebApp(object):
     @cherrypy.expose
     def cameras(self):
         tparams = {
-            'title': 'Cameras',
+            'title': 'Câmaras',
             'message': 'Your application description page.',
             'user': self.get_user(),
             'year': datetime.now().year,
@@ -121,7 +121,7 @@ class WebApp(object):
     @cherrypy.expose
     def contact(self):
         tparams = {
-            'title': 'Contact',
+            'title': 'Contactos',
             'message': 'Your contact page.',
             'user': self.get_user(),
             'year': datetime.now().year,
