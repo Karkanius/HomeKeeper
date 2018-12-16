@@ -2,6 +2,34 @@
 
 {% block content %}
 
-<h2>{{ title }}</h2>
+<h2>{{ title }}.</h2>
+
+<div class="container">
+    <div id="products" class="row view-group">
+        {% for x in database %}
+            <div class="item col-xs-4 col-lg-4">
+                <div class="thumbnail card">
+                    <div class="img-event">
+                        <iframe class="group list-group-image img-fluid" width="400" height="250" src={{x[1]}}  alt=""/>
+                        </iframe>
+                    </div>
+                    <div class="caption card-body">
+                        <h4 class="group card-title inner list-group-item-heading">
+                            {{ x[0]}}</h4>
+                            <form action="bigCam" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="id_name"></label>
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input id=id_name name="name" type="submit" value=Ver-{{x[0]}} class="btn btn-default" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}

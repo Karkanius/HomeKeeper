@@ -110,13 +110,46 @@ class WebApp(object):
 
     @cherrypy.expose
     def cameras(self):
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['cameras'].copy()
+                break
         tparams = {
             'title': 'Câmaras',
             'message': 'Your application description page.',
             'user': self.get_user(),
             'year': datetime.now().year,
+            'database': serv_aux
         }
         return self.render('cameras.html', tparams)
+
+    @cherrypy.expose
+    def bigCam(self,name):
+        print(name)
+        user = self.get_user()
+        db_json = json.load(open(WebApp.dbjson))
+        users = db_json['users']
+        serv_aux=[]
+        for u in users:
+            if u['username'] == user['username']:
+                serv_aux = u['cameras'].copy()
+                break
+        aux=name.split('-')
+        lst=""
+        for u in serv_aux:
+            if u[0]==aux[1]:
+                lst=u
+        print(lst)
+        tparams = {
+            'title': aux[1],
+            'user': self.get_user(),
+            'year': datetime.now().year,
+            'database': lst
+        }
+        return self.render('bigCam.html', tparams)
 
     @cherrypy.expose
     def contact(self):
