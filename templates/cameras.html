@@ -4,13 +4,13 @@
 
 <h2>{{ title }}.</h2>
 
-<div class="container">
+<div class="container-fluid">
     <div id="products" class="row view-group">
         {% for x in database %}
             <div class="item col-xs-4 col-lg-4">
                 <div class="thumbnail card">
                     <div class="img-event">
-                        <iframe class="group list-group-image img-fluid" width="400" height="250" src={{x[1]}}  alt=""/>
+                        <iframe class="group list-group-image img-fluid" src={{x[1]}}  alt=""/>
                         </iframe>
                     </div>
                     <div class="caption card-body">
@@ -27,8 +27,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 
