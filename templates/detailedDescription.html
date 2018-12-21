@@ -138,13 +138,13 @@
                         </div>
                         <form action="professionals" method="post" class="form-horizontal">
                             <div class="form-group">
+                                <label for="appt">Escolher uma hora entre {{professional.hora[0]}}h e {{professional.hora[1]}}h</label>
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="time" id="appt" name="appt" min="{{professional.hora[0]}}" max="{{professional.hora[1]}}" required>
+                                </div>
                                 <label for="dat">Escolher um dia</label>
                                 <div class="col-md-offset-2 col-md-10">
                                     <input type="date" id="dat" name="dat" required>
-                                </div>
-                                <label for="appt">Escolher uma hora entre {{professional.hora[0]}}h e {{professional.hora[1]}}h</label>
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="time" id="appt" name="appt" required>
                                 </div>
                                 <label for="id_name"></label>
                                 <div class="col-md-offset-2 col-md-10">
