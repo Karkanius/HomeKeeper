@@ -101,8 +101,7 @@ class WebApp(object):
     @cherrypy.expose
     def about(self):
         tparams = {
-            'title': 'About',
-            'message': 'Your application description page.',
+            'title': 'Sobre',
             'user': self.get_user(),
             'year': datetime.now().year,
         }
