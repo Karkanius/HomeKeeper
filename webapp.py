@@ -269,7 +269,7 @@ class WebApp(object):
             if d['nome'] == name:
                 professional = d
         tparams = {
-            'title': 'Limpeza',
+            'title': 'Profissional',
             'message': 'Your application description page.',
             'user': self.get_user(),
             'professional': professional,
