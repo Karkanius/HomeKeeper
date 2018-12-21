@@ -150,16 +150,6 @@ class WebApp(object):
         }
         return self.render('bigCam.html', tparams)
 
-    @cherrypy.expose
-    def contact(self):
-        tparams = {
-            'title': 'Contactos',
-            'message': 'Your contact page.',
-            'user': self.get_user(),
-            'year': datetime.now().year,
-        }
-        return self.render('contact.html', tparams)
-
 
     @cherrypy.expose
     def login(self, username=None, password=None):
