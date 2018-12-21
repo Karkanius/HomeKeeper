@@ -182,7 +182,7 @@ class WebApp(object):
                     'user': self.get_user(),
                     'year': datetime.now().year,
                 }
-                return self.render('login.html', tparams)
+                return self.render('index.html', tparams)
             else:
                 raise cherrypy.HTTPRedirect("/")
 
